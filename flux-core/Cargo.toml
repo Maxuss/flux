@@ -1,0 +1,16 @@
+[package]
+name = "flux-core"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+flux-macros = { path = "../flux-macros", optional = true }
+flux-nbt = { path = "../flux-nbt" }
+lobsterchat = "0.4.2"
+rayon = "1.6.0"
+
+[features]
+default = ["macros"]
+macros = ["dep:flux-macros"]
