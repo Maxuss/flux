@@ -1,10 +1,8 @@
 pub mod macros;
-#[doc(hidden)]
 pub mod snbt;
 
 pub use nbt as bin;
 pub use nbt::Value;
-pub use snbt as str;
 
 #[cfg(test)]
 mod tests {
@@ -23,5 +21,18 @@ mod tests {
             }
         };
         assert_eq!(tag.tag_name(), "TAG_Compound")
+    }
+
+    #[test]
+    pub fn test_snbt() {
+        let value = nbt! {
+            first: "Hello, World!",
+            second: [I; 1, 2, 3],
+            third: {
+                a: 1,
+                b: [B; 1, 2, 3],
+            }
+        };
+        println!("{}", snbt::to_string(&value))
     }
 }

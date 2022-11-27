@@ -24,7 +24,7 @@ impl Snbt for Value {
                 let len = bytes.len();
                 for (index, part) in bytes.iter().enumerate() {
                     into.push_str(&part.to_string());
-                    if index <= len {
+                    if index + 1 < len {
                         into.push(',')
                     }
                 }
@@ -36,7 +36,7 @@ impl Snbt for Value {
                 let len = ls.len();
                 for (index, part) in ls.iter().enumerate() {
                     into.push_str(&part.to_string());
-                    if index < len {
+                    if index + 1 < len {
                         into.push(',')
                     }
                 }
@@ -48,7 +48,7 @@ impl Snbt for Value {
                 for (index, (key, value)) in cmp.iter().enumerate() {
                     into.push_str(&format!("{key}:"));
                     value.snbt_fmt(into);
-                    if index < len {
+                    if index + 1 < len {
                         into.push(',')
                     }
                 }
@@ -59,7 +59,7 @@ impl Snbt for Value {
                 let len = ints.len();
                 for (index, part) in ints.iter().enumerate() {
                     into.push_str(&part.to_string());
-                    if index <= len {
+                    if index + 1 < len {
                         into.push(',')
                     }
                 }
@@ -70,7 +70,7 @@ impl Snbt for Value {
                 let len = longs.len();
                 for (index, part) in longs.iter().enumerate() {
                     into.push_str(&part.to_string());
-                    if index <= len {
+                    if index + 1 < len {
                         into.push(',')
                     }
                 }
