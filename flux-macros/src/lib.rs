@@ -1,14 +1,10 @@
-pub fn add(left: usize, right: usize) -> usize {
-    left + right
-}
+use proc::proc;
+use proc_macro::TokenStream;
+use syn::{parse_macro_input, DeriveInput};
 
-#[cfg(test)]
-mod tests {
-    use super::*;
+mod proc;
 
-    #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
-    }
+#[proc_macro_derive(Nbt, attributes(lower, rename))]
+pub fn derive_nbt(input: TokenStream) -> TokenStream {
+    proc(parse_macro_input!(input as DeriveInput))
 }

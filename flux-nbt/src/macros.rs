@@ -6,7 +6,7 @@ macro_rules! nbt {
         $($k:tt: $v:tt),* $(,)*
     ) => {{
         #[allow(unused_imports)]
-        use $crate::macros::IntoTag;
+        use $crate::Nbt;
         $crate::Value::Compound(std::collections::HashMap::<String, $crate::Value>::from([
             $(
             ($crate::__nbt_key!($k), $crate::__nbt_val!($v)),
@@ -40,10 +40,10 @@ macro_rules! __nbt_val {
         nbt!($($k:$v,)*)
     };
     ($var:ident) => {
-        $var.into_tag()
+        $var.nbt()
     };
     ($lit:literal) => {
-        $lit.into_tag()
+        $lit.nbt()
     };
     ([$($ele:tt),* $(,)*]) => {
         $crate::Value::List(vec![$($crate::__nbt_val!($ele),)*])
@@ -65,46 +65,46 @@ macro_rules! __nbt_val {
 macro_rules! existing_impls {
     ($($i:ty),*) => {
         $(
-            impl IntoTag for $i {
-                fn into_tag(self) -> Value {
-                    Value::from(self)
+            impl Nbt for $i {
+                fn nbt(&self) -> Value {
+                    Value::from(self.to_owned())
                 }
             }
         )*
     };
 }
 
-pub trait IntoTag {
-    fn into_tag(self) -> Value;
+pub trait Nbt {
+    fn nbt(&self) -> Value;
 }
 
-impl IntoTag for bool {
-    fn into_tag(self) -> Value {
-        Value::Byte(self as i8)
+impl Nbt for bool {
+    fn nbt(&self) -> Value {
+        Value::Byte(*self as i8)
     }
 }
 
-impl IntoTag for u8 {
-    fn into_tag(self) -> Value {
-        Value::Byte(self as i8)
+impl Nbt for u8 {
+    fn nbt(&self) -> Value {
+        Value::Byte(*self as i8)
     }
 }
 
-impl IntoTag for u16 {
-    fn into_tag(self) -> Value {
-        Value::Short(self as i16)
+impl Nbt for u16 {
+    fn nbt(&self) -> Value {
+        Value::Short(*self as i16)
     }
 }
 
-impl IntoTag for u32 {
-    fn into_tag(self) -> Value {
-        Value::Int(self as i32)
+impl Nbt for u32 {
+    fn nbt(&self) -> Value {
+        Value::Int(*self as i32)
     }
 }
 
-impl IntoTag for u64 {
-    fn into_tag(self) -> Value {
-        Value::Long(self as i64)
+impl Nbt for u64 {
+    fn nbt(&self) -> Value {
+        Value::Long(*self as i64)
     }
 }
 

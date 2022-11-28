@@ -1,6 +1,7 @@
 pub mod macros;
 pub mod snbt;
 
+pub use macros::Nbt;
 pub use nbt as bin;
 pub use nbt::Value;
 

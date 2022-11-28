@@ -1,2 +1,2 @@
 [workspace]
-members = ["flux-core", "flux-macros", "flux-nbt"]
+members = ["fluxmc", "flux-macros", "flux-nbt", "example"]
