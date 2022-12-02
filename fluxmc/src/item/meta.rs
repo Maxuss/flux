@@ -1,5 +1,6 @@
 use serde::Serialize;
 
+use crate::Nbt;
 use crate::{attr::AttributeModifier, id::Identifier};
 
 #[derive(Debug, Clone, Serialize)]

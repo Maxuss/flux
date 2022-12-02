@@ -1,6 +1,8 @@
 use std::fmt::Display;
 
 use convert_case::{Case, Casing};
+use flux_nbt::Value;
+use fluxmc::Nbt;
 use serde::{Deserialize, Serialize};
 
 use crate::id::Identifier;
@@ -1001,5 +1003,14 @@ impl Display for Material {
 impl From<Material> for Identifier {
     fn from(mat: Material) -> Self {
         Identifier::new("minecraft".to_owned(), format!("{mat}"))
+    }
+}
+
+impl Nbt for Material {
+    fn nbt(&self) -> Value {
+        Value::String(format!(
+            "{}",
+            <Self as Into<Identifier>>::into(self.to_owned())
+        ))
     }
 }

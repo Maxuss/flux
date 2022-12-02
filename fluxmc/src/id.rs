@@ -1,5 +1,6 @@
 use std::{borrow::Cow, fmt::Display};
 
+use flux_nbt::{Nbt, Value};
 use serde::Serialize;
 
 use crate::err::Error;
@@ -53,4 +54,10 @@ impl Serialize for Identifier {
 struct IdentifierInner<'a> {
     namespace: Cow<'a, str>,
     path: Cow<'a, str>,
+}
+
+impl Nbt for Identifier {
+    fn nbt(&self) -> flux_nbt::Value {
+        Value::String(self.to_string())
+    }
 }

@@ -1,4 +1,5 @@
 pub mod macros;
+pub mod ser;
 pub mod snbt;
 
 pub use macros::Nbt;

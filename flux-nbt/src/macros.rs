@@ -1,4 +1,5 @@
 use nbt::Value;
+use uuid::Uuid;
 
 #[macro_export]
 macro_rules! nbt {
@@ -108,6 +109,23 @@ impl Nbt for u64 {
     }
 }
 
+impl<T: Nbt> Nbt for Vec<T> {
+    fn nbt(&self) -> Value {
+        Value::List(
+            self.to_owned()
+                .iter()
+                .map(|element| element.nbt())
+                .collect(),
+        )
+    }
+}
+
+impl Nbt for Uuid {
+    fn nbt(&self) -> Value {
+        Value::String(self.to_string())
+    }
+}
+
 existing_impls!(
     i8,
     i16,
@@ -118,9 +136,6 @@ existing_impls!(
     &[i8],
     &[i32],
     &[i64],
-    Vec<i8>,
-    Vec<i32>,
-    Vec<i64>,
     f32,
     f64
 );

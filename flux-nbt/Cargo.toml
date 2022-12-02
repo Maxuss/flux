@@ -7,3 +7,6 @@ edition = "2021"
 
 [dependencies]
 hematite-nbt = "0.5.2"
+uuid = "1.2.2"
+serde = "1.0.148"
+thiserror = "1.0.37"
