@@ -1,7 +1,11 @@
 pub mod attr;
+pub mod effect;
 pub mod err;
 pub mod id;
 pub mod item;
+pub mod loc;
+pub mod text;
+pub mod util;
 
 pub use flux_macros as macros;
 pub use flux_nbt as nbt;

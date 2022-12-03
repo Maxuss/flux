@@ -1,13 +1,18 @@
+mod book;
+pub mod ench;
+mod firework;
 mod material;
 mod meta;
 
+pub use book::*;
+pub use firework::*;
 pub use material::*;
 pub use meta::*;
 use serde::Serialize;
 
 use crate::id::Identifier;
 
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, PartialEq, PartialOrd)]
 pub struct ItemStack {
     id: Identifier,
     #[serde(rename = "tag")]

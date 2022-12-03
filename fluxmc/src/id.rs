@@ -9,6 +9,13 @@ use crate::err::Error;
 pub struct Identifier(IdentifierInner<'static>);
 
 impl Identifier {
+    pub fn minecraft<P: Into<String>>(path: P) -> Self {
+        Self(IdentifierInner {
+            namespace: Cow::Borrowed("minecraft"),
+            path: Cow::Owned(path.into()),
+        })
+    }
+
     pub fn new<N: Into<String>, P: Into<String>>(namespace: N, path: P) -> Self {
         Self(IdentifierInner {
             namespace: Cow::Owned(namespace.into()),

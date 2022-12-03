@@ -3,7 +3,7 @@ use uuid::Uuid;
 
 use crate::item::EquipmentSlot;
 
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, PartialEq, PartialOrd)]
 pub struct AttributeModifier {
     #[serde(rename = "AttributeName")]
     pub attribute: Attribute,
