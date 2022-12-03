@@ -34,3 +34,10 @@ impl<T: ToString> From<T> for SerdeStr<T> {
         Self(value)
     }
 }
+
+#[derive(Debug, Clone, PartialEq, PartialOrd, Eq, Ord, Serialize)]
+#[serde(untagged)]
+pub enum StringOr<T: ToString> {
+    String(String),
+    Other(SerdeStr<T>),
+}

@@ -1,6 +1,7 @@
 use serde::Serialize;
 
 use crate::{
+    effect::EffectKind,
     id::Identifier,
     item::{FireworkExplosion, ItemStack},
     loc::Position,
@@ -321,4 +322,35 @@ impl Serialize for MapDecorationKind {
     {
         serializer.serialize_u8(*self as u8)
     }
+}
+
+#[derive(Debug, Clone, PartialEq, PartialOrd, Serialize)]
+#[serde(rename_all = "PascalCase")]
+pub struct SuspiciousStewMeta {
+    effects: Vec<StewEffect>,
+}
+
+impl SuspiciousStewMeta {
+    pub fn new() -> Self {
+        Self { effects: vec![] }
+    }
+
+    pub fn new_full(effects: Vec<StewEffect>) -> Self {
+        Self { effects }
+    }
+
+    pub fn effects(&self) -> &Vec<StewEffect> {
+        &self.effects
+    }
+
+    pub fn add_effect(&mut self, effect: StewEffect) {
+        self.effects.push(effect)
+    }
+}
+
+#[derive(Debug, Clone, PartialEq, PartialOrd, Serialize)]
+#[serde(rename_all = "PascalCase")]
+pub struct StewEffect {
+    pub effect_id: EffectKind,
+    pub effect_duration: i32,
 }

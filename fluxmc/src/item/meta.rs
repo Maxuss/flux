@@ -1,3 +1,5 @@
+mod book;
+mod head;
 mod misc;
 
 use bitflags::bitflags;
@@ -9,11 +11,12 @@ use crate::{
 };
 
 use super::{
-    book::{BookAndQuillMeta, WrittenBookMeta},
     ench::{EnchantedBookMeta, Enchantment},
     FireworkExplosion,
 };
 
+pub use book::*;
+pub use head::*;
 pub use misc::*;
 
 #[derive(Debug, Clone, Serialize, PartialEq, PartialOrd)]
@@ -79,4 +82,6 @@ pub enum ItemMeta {
     Firework(FireworkMeta),
     FireworkStar(FireworkExplosion),
     Map(MapMeta),
+    Head(HeadMeta),
+    SuspiciousStew(SuspiciousStewMeta),
 }
