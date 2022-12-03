@@ -19,7 +19,11 @@ extern crate self as fluxmc;
 mod tests {
     use std::f32::consts::PI;
 
+    use flux_nbt::ser::{to_nbt, to_snbt};
+    use lobsterchat::lobster;
     use serde::Serialize;
+
+    use crate::item::{ItemDisplay, ItemStack, Material};
 
     #[derive(Serialize)]
     struct SerdeTest {
@@ -65,5 +69,25 @@ mod tests {
         };
         let nbt = flux_nbt::ser::to_snbt(&test).unwrap();
         println!("{nbt}")
+    }
+
+    #[test]
+    fn test_snbt() {
+        let test = vec!["abc", "def", "ghi"];
+        let snbt = to_snbt(&test).unwrap();
+        println!("{snbt}")
+    }
+
+    #[test]
+    fn test_items() {
+        let mut item = ItemStack::new(Material::DiamondSword);
+        let mut lore = ItemDisplay::new();
+        lore.set_name(lobster("<gold>Cool Sword").italic(false));
+        lore.set_lore(vec![
+            lobster("Line 1"),
+            lobster("<yellow>Line 2").bold(true),
+        ]);
+        item.meta.display = Some(lore);
+        println!("{}", item)
     }
 }

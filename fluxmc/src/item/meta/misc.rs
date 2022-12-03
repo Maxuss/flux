@@ -348,6 +348,12 @@ impl SuspiciousStewMeta {
     }
 }
 
+impl Default for SuspiciousStewMeta {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 #[derive(Debug, Clone, PartialEq, PartialOrd, Serialize)]
 #[serde(rename_all = "PascalCase")]
 pub struct StewEffect {

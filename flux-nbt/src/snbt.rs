@@ -35,7 +35,7 @@ impl Snbt for Value {
                 into.push('[');
                 let len = ls.len();
                 for (index, part) in ls.iter().enumerate() {
-                    into.push_str(&part.to_string());
+                    part.snbt_fmt(into);
                     if index + 1 < len {
                         into.push(',')
                     }
