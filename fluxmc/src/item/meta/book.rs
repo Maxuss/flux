@@ -44,7 +44,7 @@ impl Serialize for BookGeneration {
     }
 }
 
-#[derive(Debug, Clone, Serialize, PartialEq, PartialOrd)]
+#[derive(Default, Debug, Clone, Serialize, PartialEq, PartialOrd)]
 pub struct WrittenBookMeta {
     resolved: Option<bool>,
     generation: Option<BookGeneration>,

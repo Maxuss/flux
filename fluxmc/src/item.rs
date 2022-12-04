@@ -17,7 +17,7 @@ use crate::id::Identifier;
 pub struct ItemStack {
     id: Identifier,
     #[serde(rename = "tag")]
-    pub meta: ItemMetaTag,
+    meta: ItemMetaTag,
     count: i8,
 }
 
@@ -25,7 +25,7 @@ impl ItemStack {
     pub fn new(material: Material) -> Self {
         Self {
             id: material.into(),
-            meta: ItemMetaTag::default(),
+            meta: ItemMetaTag::material_bound(material),
             count: 1,
         }
     }
@@ -44,6 +44,11 @@ impl ItemStack {
 
     pub fn set_count(&mut self, count: i8) {
         self.count = count
+    }
+
+    pub fn with_meta<F: FnOnce(&mut ItemMetaTag)>(mut self, modifier: F) -> Self {
+        modifier(&mut self.meta);
+        self
     }
 }
 

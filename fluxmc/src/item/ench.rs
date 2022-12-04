@@ -101,8 +101,30 @@ impl Serialize for EnchantKind {
     }
 }
 
-#[derive(Debug, Clone, Serialize, PartialEq, PartialOrd)]
+#[derive(Default, Debug, Clone, Serialize, PartialEq, PartialOrd)]
 #[serde(rename_all = "PascalCase")]
 pub struct EnchantedBookMeta {
     stored_enchantments: Vec<Enchantment>,
+}
+
+impl EnchantedBookMeta {
+    pub fn new() -> Self {
+        Self {
+            stored_enchantments: Vec::with_capacity(2),
+        }
+    }
+
+    pub fn new_full(enchs: Vec<Enchantment>) -> Self {
+        Self {
+            stored_enchantments: enchs,
+        }
+    }
+
+    pub fn stored_enchantments(&self) -> &Vec<Enchantment> {
+        &self.stored_enchantments
+    }
+
+    pub fn add_enchantment(&mut self, ench: Enchantment) {
+        self.stored_enchantments.push(ench)
+    }
 }

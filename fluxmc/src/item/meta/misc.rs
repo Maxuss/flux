@@ -107,7 +107,7 @@ impl BundleMeta {
     }
 }
 
-#[derive(Debug, Clone, Serialize, PartialEq, PartialOrd)]
+#[derive(Default, Debug, Clone, Serialize, PartialEq, PartialOrd)]
 #[serde(rename_all = "PascalCase")]
 pub struct CompassMeta {
     lodestone_tracked: bool,
@@ -192,7 +192,7 @@ impl CrossbowMeta {
     }
 }
 
-#[derive(Debug, Clone, PartialEq, PartialOrd, Serialize)]
+#[derive(Default, Debug, Clone, PartialEq, PartialOrd, Serialize)]
 #[serde(rename_all = "PascalCase")]
 pub struct FireworkMeta {
     explosions: Vec<FireworkExplosion>,
@@ -224,7 +224,7 @@ impl FireworkMeta {
     }
 }
 
-#[derive(Debug, Clone, Serialize, PartialEq, PartialOrd)]
+#[derive(Default, Debug, Clone, Serialize, PartialEq, PartialOrd)]
 pub struct MapMeta {
     map: i32,
     decorations: Vec<MapDecoration>,

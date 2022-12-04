@@ -1,6 +1,6 @@
 use serde::Serialize;
 
-#[derive(Debug, Clone, PartialEq, PartialOrd, Serialize)]
+#[derive(Default, Debug, Clone, PartialEq, PartialOrd, Serialize)]
 #[serde(rename_all = "PascalCase")]
 pub struct FireworkExplosion {
     colors: Vec<u32>,
@@ -62,9 +62,10 @@ impl FireworkExplosion {
     }
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Default, Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 #[repr(u8)]
 pub enum ExplosionKind {
+    #[default]
     SmallBall = 0,
     LargeBall,
     Star,

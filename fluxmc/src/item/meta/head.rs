@@ -3,7 +3,7 @@ use uuid::Uuid;
 
 use crate::text::StringOr;
 
-#[derive(Debug, Clone, Serialize, PartialEq, PartialOrd)]
+#[derive(Default, Debug, Clone, Serialize, PartialEq, PartialOrd)]
 #[serde(rename_all = "PascalCase")]
 pub struct HeadMeta {
     skull_owner: SkullOwner,
@@ -29,6 +29,10 @@ impl HeadMeta {
     pub fn owner_mut(&mut self) -> &mut SkullOwner {
         &mut self.skull_owner
     }
+
+    pub fn set_owner<O: Into<SkullOwner>>(&mut self, owner: O) {
+        self.skull_owner = owner.into()
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, PartialOrd, Serialize)]
@@ -36,6 +40,30 @@ impl HeadMeta {
 pub enum SkullOwner {
     String(String),
     Compound(CompoundSkullOwner),
+}
+
+impl Default for SkullOwner {
+    fn default() -> Self {
+        Self::String("Steve".to_owned())
+    }
+}
+
+impl From<CompoundSkullOwner> for SkullOwner {
+    fn from(value: CompoundSkullOwner) -> Self {
+        Self::Compound(value)
+    }
+}
+
+impl From<String> for SkullOwner {
+    fn from(value: String) -> Self {
+        Self::String(value)
+    }
+}
+
+impl From<&str> for SkullOwner {
+    fn from(value: &str) -> Self {
+        Self::String(value.to_owned())
+    }
 }
 
 #[derive(Debug, Clone, Serialize, PartialEq, PartialOrd)]
@@ -47,39 +75,51 @@ pub struct CompoundSkullOwner {
 }
 
 impl CompoundSkullOwner {
-    pub fn new(skin: String) -> Self {
+    pub fn new<S: Into<String>>(skin: S) -> Self {
         let id = Uuid::new_v4();
+        let skin = skin.into();
         Self {
             id,
             name: id.to_string(),
             properties: SkullProperties {
-                textures: vec![StringOr::String(skin)],
+                textures: vec![TextureContainer {
+                    value: StringOr::String(skin),
+                }],
             },
         }
     }
 
-    pub fn from_url(url: String) -> Self {
+    pub fn from_url<S: Into<String>>(url: S) -> Self {
         let id = Uuid::new_v4();
+        let url = url.into();
+        let url = if url.starts_with("http://textures.minecraft.net/texture") {
+            url
+        } else {
+            format!("http://textures.minecraft.net/texture/{url}")
+        };
+
         Self {
             id,
             name: id.to_string(),
             properties: SkullProperties {
-                textures: vec![StringOr::Other(
-                    HeadTexture {
-                        profile_name: None,
-                        timestamp: None,
-                        texture: vec![ActualTexture {
-                            cape: None,
-                            skin: SkinData {
-                                url,
-                                metadata: SkinMetadata {
-                                    model: SkinModel::Classic,
+                textures: vec![TextureContainer {
+                    value: StringOr::Other(
+                        HeadTexture {
+                            profile_name: None,
+                            timestamp: None,
+                            textures: ActualTexture {
+                                cape: None,
+                                skin: SkinData {
+                                    url,
+                                    metadata: SkinMetadata {
+                                        model: SkinModel::Classic,
+                                    },
                                 },
                             },
-                        }],
-                    }
-                    .into(),
-                )],
+                        }
+                        .into(),
+                    ),
+                }],
             },
         }
     }
@@ -102,8 +142,14 @@ impl CompoundSkullOwner {
 }
 
 #[derive(Debug, Clone, Serialize, PartialEq, PartialOrd)]
+#[serde(rename_all = "PascalCase")]
+pub struct TextureContainer {
+    value: StringOr<HeadTexture>,
+}
+
+#[derive(Debug, Clone, Serialize, PartialEq, PartialOrd)]
 pub struct SkullProperties {
-    textures: Vec<StringOr<HeadTexture>>,
+    textures: Vec<TextureContainer>,
 }
 
 #[derive(Debug, Clone, Serialize, PartialEq, PartialOrd)]
@@ -113,7 +159,7 @@ pub struct HeadTexture {
     pub profile_name: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub timestamp: Option<u64>,
-    pub texture: Vec<ActualTexture>,
+    pub textures: ActualTexture,
 }
 
 impl ToString for HeadTexture {

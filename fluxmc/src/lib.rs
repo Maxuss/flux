@@ -19,11 +19,11 @@ extern crate self as fluxmc;
 mod tests {
     use std::f32::consts::PI;
 
-    use flux_nbt::ser::{to_nbt, to_snbt};
+    use flux_nbt::ser::to_snbt;
     use lobsterchat::lobster;
     use serde::Serialize;
 
-    use crate::item::{ItemDisplay, ItemStack, Material};
+    use crate::item::{CompoundSkullOwner, ItemDisplay, ItemStack, Material};
 
     #[derive(Serialize)]
     struct SerdeTest {
@@ -80,14 +80,21 @@ mod tests {
 
     #[test]
     fn test_items() {
-        let mut item = ItemStack::new(Material::DiamondSword);
-        let mut lore = ItemDisplay::new();
-        lore.set_name(lobster("<gold>Cool Sword").italic(false));
-        lore.set_lore(vec![
-            lobster("Line 1"),
-            lobster("<yellow>Line 2").bold(true),
-        ]);
-        item.meta.display = Some(lore);
+        let item = ItemStack::new(Material::PlayerHead).with_meta(|meta| {
+            let mut lore = ItemDisplay::new();
+            lore.set_name(lobster("<bold><aqua>Cool Head").italic(false));
+            lore.set_lore(vec![
+                lobster("<gray>Line 1").italic(false),
+                lobster("<yellow>Line 2").bold(true),
+            ]);
+            meta.set_display(lore);
+            meta.with_meta(|modifier| {
+                let head = modifier.as_head().unwrap();
+                head.set_owner(CompoundSkullOwner::from_url(
+                    "f815fc1cd643cb5a08aa9bdc66a6551572f646303f0caa3cfbcf3c3a25e511d4",
+                ));
+            });
+        });
         println!("{}", item)
     }
 }
