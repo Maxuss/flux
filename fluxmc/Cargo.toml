@@ -22,3 +22,10 @@ base64 = "0.13.1"
 [features]
 default = ["macros"]
 macros = ["dep:flux-macros"]
+
+[dev-dependencies]
+criterion = "0.4"
+
+[[bench]]
+name = "benches"
+harness = false
